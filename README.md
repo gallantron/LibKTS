@@ -171,7 +171,7 @@ An entrant object has the following members:
   * `.matches.playoff` _Array of <code>[Match](#object-Match)</code>_ all playoff matches the entrant has participated in
   * To get the entrant's match for a specific round, use `.matches.byEntrant` on [Round](#object-Round)
 * `.dropped` _Object or null_ non-`null` if and only if the entrant has been dropped from the tournament
-  * `.dropped.round` _int_ the round in which the entrant was dropped
+  * `.dropped.round` _[Round](#object-Round)_ the round in which the entrant was dropped
   * `.dropped.reason` _string_ the reason for which the entrant was dropped
 * `.assignedSeating` _int or null_ fixed table number assigned to this entrant
 

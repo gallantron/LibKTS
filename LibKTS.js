@@ -781,6 +781,9 @@ const Parse = function(txt)
             losses: (entrant.record.swiss.losses + entrant.record.playoff.losses),
             draws: entrant.record.swiss.draws,
         };
+        
+        if (entrant.dropped)
+            entrant.dropped.round = tournament.rounds.byRoundIdx[entrant.dropped.round];
     }
     
     for (const round of tournament.rounds.playoff)
