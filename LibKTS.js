@@ -619,6 +619,10 @@ const Parse = function(txt)
         tournament.rounds[isPlayoff ? 'playoff' : 'swiss'].push(round);
         tournament.rounds.byRoundIdx[roundIdx] = round;
     }
+    if (currentRound > 0)
+        tournament.rounds.current = tournament.rounds.byRoundIdx[currentRound];
+    else
+        tournament.rounds.current = null;
     
     tournament.matches = { all: [], complete: [], ongoing: [] };
     for (const matchElm of kts.querySelectorAll(':scope > Matches > TournMatch'))
@@ -644,8 +648,12 @@ const Parse = function(txt)
             opponentFor: {},
         };
         
-        if (!isPlayoff)
-            match.pointsFor = {};
+        if (match.isComplete)
+        {
+            match.resultFor = {};
+            if (!isPlayoff)
+                match.pointsFor = {};
+        }
         
         if (player1Id !== '0')
         {
@@ -672,31 +680,53 @@ const Parse = function(txt)
                         throw ('Invalid entrant with ID '+winner+' for round '+roundNumber+' table '+table);
                     match.winner = entrant;
                 }
-                if (!isPlayoff)
-                    for (const entrant of match.entrants)
-                        if (entrant)
-                            match.pointsFor[entrant] = ((entrant === match.winner) ? 3 : 0);
+                
+                for (const entrant of match.entrants)
+                {
+                    if (entrant)
+                        match.resultFor[entrant] = ((entrant === match.winner) ? 'win' : 'loss');
+                }
+                
                 break;
             case 'Draw':
-                if (!isPlayoff)
-                    for (const entrant of match.entrants)
-                        if (entrant)
-                            match.pointsFor[entrant] = 1;
+                for (const entrant of match.entrants)
+                {
+                    if (entrant)
+                        match.resultFor[entrant] = 'draw';
+                }
                 break;
             case 'DoubleLoss':
-                if (!isPlayoff)
-                    for (const entrant of match.entrants)
-                        if (entrant)
-                            match.pointsFor[entrant] = 0;
+                for (const entrant of match.entrants)
+                {
+                    if (entrant)
+                        match.resultFor[entrant] = 'loss';
+                }
                 break;
             case 'Incomplete':
-                if (!isPlayoff)
-                    for (const entrant of match.entrants)
-                        if (entrant)
-                            match.pointsFor[entrant] = 0;
                 break;
             default:
                 throw ('Unknown status "'+status+'" for round '+roundNumber+' table '+table);
+        }
+        
+        if (match.isComplete && !isPlayoff)
+        {
+            for (const entrant of match.entrants)
+            {
+                if (!entrant)
+                    continue;
+                switch (match.resultFor[entrant])
+                {
+                    case 'win':
+                        match.pointsFor[entrant] = 3;
+                        break;
+                    case 'draw':
+                        match.pointsFor[entrant] = 1;
+                        break;
+                    case 'loss':
+                        match.pointsFor[entrant] = 0;
+                        break;
+                }
+            }
         }
         
         if (match.entrants[0])
