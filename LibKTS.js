@@ -453,7 +453,7 @@ const Parse = function(txt)
     
     {
         tournament.id = { id: ExtractDOMChild(kts, 'ID', 'text') };
-        tournament.id.isTemporary = tournament.id.id.startsWith('X99');
+        tournament.id.isTemporary = tournament.id.id.startsWith('X');
         Object.defineProperty(tournament.id, 'toString', __idToString);
 
         tournament.name = ExtractDOMChild(kts, 'Name', 'text');
