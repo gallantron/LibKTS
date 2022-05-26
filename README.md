@@ -138,6 +138,7 @@ Represents an individual player. Note that matches are played between _<code>[En
 A player object has the following members:
 
 * `.kcgnId` _string or null_ the player's assigned KCGN ID, if provided; `null` for players enrolled with a temporary ID
+* `.temporaryId` _string or null_ the temporary ID assigned by KTS, for players without a KCGN ID; not globally unique!
 * `.name` _string_ the player's "full name" as displayed in KTS
 * `.lastName` _string or null_ the player's last name, as entered in KTS
 * `.firstName` _string or null_ the player's first name, as entered in KTS

@@ -430,6 +430,7 @@ const ParsePlayer = function(elm)
     
     const player = {
         kcgnId: id.startsWith('9999') ? null : id,
+        temporaryId: id.startsWith('9999') ? id : null,
         firstName,
         lastName,
         name: (firstName && lastName) ? (lastName+', '+firstName) : (lastName || firstName || ''),
