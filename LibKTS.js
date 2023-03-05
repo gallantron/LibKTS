@@ -750,7 +750,7 @@ const Parse = function(txt)
         {
             if (!entrant) continue;
             if (match.round.matches.byEntrant[entrant])
-                throw ('Duplicate match for entrant '+entrant+' and round '+round);
+                throw ('Duplicate match for entrant '+entrant.name+' in round '+roundNumber);
             
             entrant.matches.all.push(match);
             entrant.matches[isPlayoff ? 'playoff' : 'swiss'].push(match);
@@ -769,7 +769,7 @@ const Parse = function(txt)
             else
             {
                 if (entrant.currentMatch)
-                    throw ('Entrant '+entrant+' is involved in two incomplete matches: '+entrant.currentMatch+' and '+match);
+                    throw ('Entrant '+entrant.name+' is involved in two incomplete matches: '+entrant.currentMatch+' and '+match);
                 entrant.currentMatch = match;
             }
         }
